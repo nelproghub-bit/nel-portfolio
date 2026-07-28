@@ -1,0 +1,25 @@
+{
+  "name": "nel-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Nel Portfolio - A full-stack portfolio website with PHP backend and React frontend",
+  "type": "module",
+  "scripts": {
+    "build": "cd my-app && npm run build",
+    "dev": "cd my-app && npm run dev",
+    "lint": "cd my-app && npm run lint",
+    "preview": "cd my-app && npm run preview"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  },
+  "keywords": [
+    "portfolio",
+    "react",
+    "php",
+    "vite"
+  ],
+  "author": "Arnel Gubi",
+  "license": "MIT"
+}

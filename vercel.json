@@ -1,0 +1,37 @@
+{
+  "buildCommand": "cd my-app && npm install && npm run build",
+  "outputDirectory": "my-app/dist",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/index.php?path=:path*"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/index.php"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.php"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/uploads/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "api/**.php": {
+      "runtime": "php-8.2"
+    }
+  }
+}

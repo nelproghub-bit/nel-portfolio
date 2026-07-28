@@ -1,0 +1,14 @@
+node_modules
+.git
+.gitignore
+README.md
+*.sql
+test_*.php
+setup_admin.php
+migrate_certifications.php
+.DS_Store
+.env.local
+.env.*.local
+my-app/node_modules
+my-app/.gitignore
+my-app/README.md
