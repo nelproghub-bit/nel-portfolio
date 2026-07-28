@@ -1,6 +1,7 @@
 {
   "buildCommand": "cd my-app && npm install && npm run build",
   "outputDirectory": "my-app/dist",
+  "nodejs": "24.x",
   "rewrites": [
     {
       "source": "/api/:path*",
