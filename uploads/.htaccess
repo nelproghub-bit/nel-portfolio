@@ -1,0 +1,14 @@
+# Prevent PHP execution in uploads directory
+<FilesMatch "\.php$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Allow PDF files to be downloaded
+<FilesMatch "\.(pdf)$">
+    Header set Content-Type application/pdf
+    Header set Content-Disposition inline
+</FilesMatch>
+
+# Prevent directory listing
+Options -Indexes
