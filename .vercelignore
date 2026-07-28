@@ -1,14 +1,39 @@
+# Dependencies
 node_modules
+my-app/node_modules
+
+# Git
 .git
 .gitignore
+
+# Documentation
 README.md
+my-app/README.md
+DEPLOYMENT.md
+DEPLOYMENT_FIX_SUMMARY.md
+QUICK_START.md
+
+# Database
 *.sql
+database.sql
+
+# Test files
 test_*.php
 setup_admin.php
 migrate_certifications.php
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Environment
+.env
 .env.local
 .env.*.local
-my-app/node_modules
-my-app/.gitignore
-my-app/README.md
+
+# Build scripts
+build.ps1
+
+# IDE
+.vscode
+.idea

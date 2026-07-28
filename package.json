@@ -11,8 +11,7 @@
     "preview": "cd my-app && npm run preview"
   },
   "engines": {
-    "node": "24.x",
-    "npm": "9.x"
+    "node": ">=20.x"
   },
   "keywords": [
     "portfolio",

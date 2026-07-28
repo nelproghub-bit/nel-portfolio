@@ -1,7 +1,4 @@
 {
-  "buildCommand": "cd my-app && npm install && npm run build",
-  "outputDirectory": "my-app/dist",
-  "nodejs": "24.x",
   "rewrites": [
     {
       "source": "/api/:path*",
@@ -27,12 +24,9 @@
       ]
     }
   ],
-  "env": {
-    "NODE_ENV": "production"
-  },
   "functions": {
     "api/**.php": {
-      "runtime": "php-8.2"
+      "runtime": "vercel-php@0.7.2"
     }
   }
 }
