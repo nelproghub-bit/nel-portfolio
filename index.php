@@ -469,10 +469,10 @@ $certs = $pdo->query("SELECT * FROM certifications ORDER BY issue_date DESC, id 
             border: 1px solid rgba(99, 102, 241, 0.3);
             border-radius: 24px;
             padding: 0;
-            max-width: 98vw;
-            max-height: 98vh;
-            width: min(1400px, 98vw);
-            height: min(900px, 98vh);
+            max-width: 95vw;
+            max-height: 95vh;
+            width: 95vw;
+            height: 95vh;
             position: relative;
             overflow: hidden;
             transform: scale(0.8) translateY(50px);
@@ -529,22 +529,21 @@ $certs = $pdo->query("SELECT * FROM certifications ORDER BY issue_date DESC, id 
         }
 
         .pdf-modal-body {
-            height: calc(100% - 70px);
+            height: calc(100% - 130px);
             position: relative;
-            background: #ffffff;
+            background: #525659;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 0;
         }
 
         .pdf-viewer {
             width: 100%;
             height: 100%;
             border: none;
-            border-radius: 0 0 24px 24px;
-            background: #ffffff;
-            object-fit: contain;
+            background: #525659;
         }
 
         .pdf-viewer-container {
@@ -553,24 +552,29 @@ $certs = $pdo->query("SELECT * FROM certifications ORDER BY issue_date DESC, id 
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #ffffff;
-            border-radius: 0 0 24px 24px;
+            background: #525659;
             position: relative;
-            overflow: auto;
+            overflow: hidden;
         }
 
         .pdf-viewer-wrapper {
             width: 100%;
             height: 100%;
-            overflow: auto;
+            overflow: hidden;
             position: relative;
-            background: #ffffff;
-            border-radius: 0 0 24px 24px;
+            background: #525659;
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: center;
-            padding: 10px;
+            padding: 0;
             box-sizing: border-box;
+        }
+        
+        .pdf-embed-fallback {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #525659;
         }
 
         .pdf-loading {
@@ -610,10 +614,12 @@ $certs = $pdo->query("SELECT * FROM certifications ORDER BY issue_date DESC, id 
 
         .pdf-actions {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             gap: 12px;
+            z-index: 10;
         }
 
         .pdf-action-btn {
@@ -641,28 +647,28 @@ $certs = $pdo->query("SELECT * FROM certifications ORDER BY issue_date DESC, id 
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .pdf-modal-content {
-                width: 95vw;
-                height: 90vh;
+                width: 98vw;
+                height: 98vh;
                 border-radius: 16px;
-                margin: 2.5vh auto;
+                margin: 1vh auto;
             }
             
             .pdf-modal-header {
-                padding: 16px 20px;
+                padding: 14px 16px;
+                min-height: 55px;
             }
             
             .pdf-modal-title {
-                font-size: 16px;
+                font-size: 15px;
             }
             
             .pdf-modal-body {
-                height: calc(100% - 70px);
+                height: calc(100% - 125px);
             }
             
             .pdf-actions {
-                bottom: 16px;
-                right: 16px;
-                flex-direction: column;
+                bottom: 12px;
+                flex-direction: row;
                 gap: 8px;
             }
 
@@ -674,48 +680,40 @@ $certs = $pdo->query("SELECT * FROM certifications ORDER BY issue_date DESC, id 
 
         @media (max-width: 480px) {
             .pdf-modal-content {
-                width: 98vw;
-                height: 95vh;
-                border-radius: 12px;
-                margin: 2.5vh auto;
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+                margin: 0;
             }
 
             .pdf-modal-header {
-                padding: 12px 16px;
+                padding: 12px 14px;
+                min-height: 50px;
             }
 
             .pdf-modal-title {
                 font-size: 14px;
             }
+            
+            .pdf-modal-body {
+                height: calc(100% - 120px);
+            }
 
             .pdf-actions {
-                bottom: 12px;
-                right: 12px;
+                bottom: 10px;
+                gap: 6px;
+            }
+            
+            .pdf-action-btn {
+                padding: 8px 12px;
+                font-size: 12px;
             }
         }
 
         /* Improved PDF display */
         .pdf-viewer-wrapper {
             position: relative;
-            overflow: auto;
-        }
-
-        .pdf-viewer-wrapper::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        .pdf-viewer-wrapper::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-
-        .pdf-viewer-wrapper::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        .pdf-viewer-wrapper::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+            overflow: hidden;
         }
 
         /* Holographic UI Elements */
@@ -1663,9 +1661,7 @@ $certs = $pdo->query("SELECT * FROM certifications ORDER BY issue_date DESC, id 
                     <span>Loading certificate...</span>
                 </div>
                 <div class="pdf-viewer-wrapper">
-                    <iframe id="pdfViewer" class="pdf-viewer" style="display: none;" 
-                            sandbox="allow-same-origin allow-scripts" 
-                            loading="lazy"></iframe>
+                    <iframe id="pdfViewer" class="pdf-viewer" style="display: none;"></iframe>
                 </div>
                 <div class="pdf-error" id="pdfError" style="display: none;">
                     <i class="ph-bold ph-warning text-4xl mb-4"></i>
@@ -1673,7 +1669,7 @@ $certs = $pdo->query("SELECT * FROM certifications ORDER BY issue_date DESC, id 
                     <p class="text-sm text-gray-400">Please try downloading the file instead.</p>
                 </div>
                 <div class="pdf-actions">
-                    <a id="pdfDownloadBtn" href="#" target="_blank" class="pdf-action-btn">
+                    <a id="pdfDownloadBtn" href="#" download class="pdf-action-btn">
                         <i class="ph-bold ph-download-simple"></i>
                         Download
                     </a>
@@ -1862,12 +1858,14 @@ $certs = $pdo->query("SELECT * FROM certifications ORDER BY issue_date DESC, id 
             const pdfError = document.getElementById('pdfError');
             const pdfDownloadBtn = document.getElementById('pdfDownloadBtn');
             const pdfOpenBtn = document.getElementById('pdfOpenBtn');
+            const pdfWrapper = document.querySelector('.pdf-viewer-wrapper');
 
             // Set modal title
             modalTitle.textContent = certName || 'Certificate Preview';
 
             // Set download and open links
             pdfDownloadBtn.href = pdfUrl;
+            pdfDownloadBtn.download = certName || 'certificate.pdf';
             pdfOpenBtn.href = pdfUrl;
 
             // Show modal
@@ -1878,156 +1876,144 @@ $certs = $pdo->query("SELECT * FROM certifications ORDER BY issue_date DESC, id 
             pdfLoading.style.display = 'flex';
             pdfViewer.style.display = 'none';
             pdfError.style.display = 'none';
+            
+            // Remove any existing embeds
+            const existingEmbed = pdfWrapper.querySelector('.pdf-embed-fallback');
+            if (existingEmbed) existingEmbed.remove();
 
-            // Load PDF with optimal scaling parameters
+            // Determine file type
+            const isImage = /\.(jpg|jpeg|png|gif|webp|bmp)$/i.test(pdfUrl);
+            const isPDF = /\.pdf$/i.test(pdfUrl);
+
+            // Load content
             setTimeout(() => {
                 try {
-                    let pdfViewerUrl = pdfUrl;
-                    
-                    // Check if it's a PDF file
-                    if (pdfUrl.toLowerCase().endsWith('.pdf')) {
-                        // Use Google Docs Viewer for better scaling and compatibility
-                        pdfViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(window.location.origin + pdfUrl)}&embedded=true`;
-                        
-                        // Alternative: Use PDF.js with scaling parameters
-                        // const pdfParams = [
-                        //     'toolbar=0',
-                        //     'navpanes=0',
-                        //     'scrollbar=1',
-                        //     'view=FitV',  // Fit to width
-                        //     'zoom=page-width'
-                        // ].join('&');
-                        // pdfViewerUrl = `${pdfUrl}#${pdfParams}`;
-                    }
-                    
-                    // Set iframe source
-                    pdfViewer.src = pdfViewerUrl;
-                    
-                    // Handle load events
-                    let loadTimeout;
-                    let hasLoaded = false;
-                    
-                    const handleLoad = () => {
-                        if (!hasLoaded) {
-                            hasLoaded = true;
-                            clearTimeout(loadTimeout);
-                            setTimeout(() => {
-                                pdfLoading.style.display = 'none';
-                                pdfViewer.style.display = 'block';
-                            }, 1000);
-                        }
-                    };
-                    
-                    const handleError = () => {
-                        if (!hasLoaded) {
-                            hasLoaded = true;
-                            clearTimeout(loadTimeout);
-                            // Try fallback method
-                            tryDirectPDFEmbed();
-                        }
-                    };
-                    
-                    // Fallback: Direct PDF embedding with object/embed
-                    const tryDirectPDFEmbed = () => {
-                        console.log('Trying direct PDF embedding...');
-                        
-                        const pdfWrapper = document.querySelector('.pdf-viewer-wrapper');
+                    if (isImage) {
+                        // Display image directly
                         pdfViewer.style.display = 'none';
                         
-                        // Remove existing fallback
-                        const existingEmbed = pdfWrapper.querySelector('.pdf-embed-fallback');
-                        if (existingEmbed) existingEmbed.remove();
+                        const img = document.createElement('img');
+                        img.className = 'pdf-embed-fallback';
+                        img.src = pdfUrl;
+                        img.alt = certName || 'Certificate';
+                        img.style.cssText = `
+                            max-width: 100%;
+                            max-height: 100%;
+                            width: auto;
+                            height: auto;
+                            object-fit: contain;
+                            border: none;
+                        `;
                         
-                        // Create object element
+                        img.onload = () => {
+                            pdfLoading.style.display = 'none';
+                        };
+                        
+                        img.onerror = () => {
+                            pdfLoading.style.display = 'none';
+                            pdfError.style.display = 'block';
+                        };
+                        
+                        pdfWrapper.appendChild(img);
+                        
+                    } else if (isPDF) {
+                        // Try direct PDF embedding first (works best in most browsers)
+                        pdfViewer.style.display = 'none';
+                        
                         const pdfObject = document.createElement('object');
                         pdfObject.className = 'pdf-embed-fallback';
-                        pdfObject.data = pdfUrl;
+                        pdfObject.data = pdfUrl + '#view=FitH&toolbar=1&navpanes=1&scrollbar=1';
                         pdfObject.type = 'application/pdf';
                         pdfObject.style.cssText = `
                             width: 100%;
                             height: 100%;
                             border: none;
-                            background: #fff;
                         `;
                         
-                        // Add fallback embed
-                        pdfObject.innerHTML = `
-                            <embed src="${pdfUrl}" type="application/pdf" width="100%" height="100%">
-                            <div style="
-                                display: flex;
-                                flex-direction: column;
-                                align-items: center;
-                                justify-content: center;
-                                height: 100%;
-                                background: #f8fafc;
-                                color: #64748b;
-                                font-family: Inter, sans-serif;
-                                padding: 2rem;
-                                text-align: center;
-                            ">
-                                <i class="ph-bold ph-file-pdf" style="font-size: 4rem; color: #ef4444; margin-bottom: 1rem;"></i>
-                                <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem; color: #334155;">PDF Preview Not Available</h3>
-                                <p style="margin: 0 0 1.5rem 0; font-size: 0.9rem;">This PDF cannot be displayed in the browser.</p>
-                                <div style="display: flex; gap: 1rem;">
-                                    <a href="${pdfUrl}" target="_blank" style="
-                                        display: inline-flex;
-                                        align-items: center;
-                                        gap: 0.5rem;
-                                        background: #6366f1;
-                                        color: white;
-                                        padding: 0.75rem 1.5rem;
-                                        border-radius: 0.5rem;
-                                        text-decoration: none;
-                                        font-weight: 600;
-                                        font-size: 0.875rem;
-                                    ">
-                                        <i class="ph-bold ph-arrow-square-out"></i>
-                                        Open PDF
-                                    </a>
-                                    <a href="${pdfUrl}" download style="
-                                        display: inline-flex;
-                                        align-items: center;
-                                        gap: 0.5rem;
-                                        background: #10b981;
-                                        color: white;
-                                        padding: 0.75rem 1.5rem;
-                                        border-radius: 0.5rem;
-                                        text-decoration: none;
-                                        font-weight: 600;
-                                        font-size: 0.875rem;
-                                    ">
-                                        <i class="ph-bold ph-download-simple"></i>
-                                        Download
-                                    </a>
-                                </div>
+                        // Add embed fallback for browsers that need it
+                        const embedElement = document.createElement('embed');
+                        embedElement.src = pdfUrl + '#view=FitH&toolbar=1&navpanes=1&scrollbar=1';
+                        embedElement.type = 'application/pdf';
+                        embedElement.style.cssText = `
+                            width: 100%;
+                            height: 100%;
+                            border: none;
+                        `;
+                        
+                        pdfObject.appendChild(embedElement);
+                        
+                        // Add final fallback message
+                        const fallbackDiv = document.createElement('div');
+                        fallbackDiv.style.cssText = `
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            height: 100%;
+                            background: #f8fafc;
+                            color: #64748b;
+                            font-family: Inter, sans-serif;
+                            padding: 2rem;
+                            text-align: center;
+                        `;
+                        fallbackDiv.innerHTML = `
+                            <i class="ph-bold ph-file-pdf" style="font-size: 4rem; color: #ef4444; margin-bottom: 1rem;"></i>
+                            <h3 style="margin: 0 0 0.5rem 0; font-size: 1.2rem; color: #334155;">PDF Viewer Not Available</h3>
+                            <p style="margin: 0 0 1.5rem 0; font-size: 0.9rem;">Your browser cannot display this PDF. Please download or open in a new tab.</p>
+                            <div style="display: flex; gap: 1rem;">
+                                <a href="${pdfUrl}" target="_blank" style="
+                                    display: inline-flex;
+                                    align-items: center;
+                                    gap: 0.5rem;
+                                    background: #6366f1;
+                                    color: white;
+                                    padding: 0.75rem 1.5rem;
+                                    border-radius: 0.5rem;
+                                    text-decoration: none;
+                                    font-weight: 600;
+                                    font-size: 0.875rem;
+                                ">
+                                    <i class="ph-bold ph-arrow-square-out"></i>
+                                    Open in New Tab
+                                </a>
+                                <a href="${pdfUrl}" download style="
+                                    display: inline-flex;
+                                    align-items: center;
+                                    gap: 0.5rem;
+                                    background: #10b981;
+                                    color: white;
+                                    padding: 0.75rem 1.5rem;
+                                    border-radius: 0.5rem;
+                                    text-decoration: none;
+                                    font-weight: 600;
+                                    font-size: 0.875rem;
+                                ">
+                                    <i class="ph-bold ph-download-simple"></i>
+                                    Download
+                                </a>
                             </div>
                         `;
+                        pdfObject.appendChild(fallbackDiv);
                         
                         pdfWrapper.appendChild(pdfObject);
                         
+                        // Hide loading after a short delay
                         setTimeout(() => {
                             pdfLoading.style.display = 'none';
-                        }, 1000);
-                    };
-                    
-                    // Set up event listeners
-                    pdfViewer.onload = handleLoad;
-                    pdfViewer.onerror = handleError;
-                    
-                    // Fallback timeout
-                    loadTimeout = setTimeout(() => {
-                        if (!hasLoaded) {
-                            console.log('PDF load timeout, trying fallback...');
-                            handleError();
-                        }
-                    }, 5000);
+                        }, 1500);
+                        
+                    } else {
+                        // Unknown file type
+                        pdfLoading.style.display = 'none';
+                        pdfError.style.display = 'block';
+                    }
 
                 } catch (error) {
-                    console.error('Error loading PDF:', error);
+                    console.error('Error loading certificate:', error);
                     pdfLoading.style.display = 'none';
                     pdfError.style.display = 'block';
                 }
-            }, 500);
+            }, 300);
         }
 
         function closePdfModal() {
